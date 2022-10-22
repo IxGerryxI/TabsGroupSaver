@@ -37,7 +37,7 @@ export default {
      * @returns {Promise}
      */
     set(key, item) {
-        console.log('save: ', key, ' - ', item, '\n', new Error().stack)
+        // console.log('save: ', key, ' - ', item, '\n', new Error().stack)
         return chrome.storage.sync.set({ [key]: item })
     },
     /**
@@ -47,7 +47,7 @@ export default {
      * @returns {Promise}
      */
     remove(key) {
-        console.log('remove: ', key, '\n', new Error().stack)
+        // console.log('remove: ', key, '\n', new Error().stack)
         if (typeof key == 'number') key = key.toString();
         return chrome.storage.sync.remove(key);
     },

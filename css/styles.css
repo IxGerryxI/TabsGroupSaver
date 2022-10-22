@@ -5,6 +5,39 @@ body {
     margin: 0;
 }
 
+:root {
+    --dark-color: #111;
+    --light-color: #F2F2F2;
+    --primary: #021373;
+    --primary-dark: #020F59;
+    --secondary: #79B4D9;
+    --secondary-dark: #023373
+}
+
 #popup_body {
     min-width: 365px;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+}
+
+.logo>span {
+    position: relative;
+    border: 1px solid var(--primary-dark);
+    border-radius: 18px;
+    background-color: var(--primary);
+    color: var(--light-color);
+    padding: 5px;
+}
+
+.logo>span::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    height: 5px;
+    background: var(--primary-dark);
+    width: 100%;
 }
