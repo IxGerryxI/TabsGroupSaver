@@ -6,7 +6,7 @@ export default {
      * @returns {Promise}
      */
     async get(id) {
-        const tab = chrome.tabs.get(id)
+        const tab = await chrome.tabs.get(id)
         return tab;
     },
     /**

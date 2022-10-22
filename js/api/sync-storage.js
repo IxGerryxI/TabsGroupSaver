@@ -11,10 +11,13 @@ export default {
     /**
      * saves the given list
      * @param {Array<Object>} list 
-     * @param {String} [key] - if not set the index will be taken
+     * @param {String} [keyColumn] - if not set the index will be taken
      */
-    saveList(list, key) {
-        list.forEach((item, index) => this.set(key || index, item));
+    saveList(list, keyColumn) {
+        list.forEach((item, index) => {
+            const key = keyColumn ? item[keyColumn] : index;
+            this.set(key || index, item)
+        });
     },
     /**
      * gets a single key
@@ -23,6 +26,7 @@ export default {
      * @returns {Promise}
      */
     get(key) {
+        if (typeof key == 'number') key = key.toString();
         return chrome.storage.sync.get(key)
     },
     /**
