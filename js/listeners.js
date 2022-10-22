@@ -74,19 +74,24 @@ export async function onTabRemoved(tabId, removeInfo) {
     // console.log('removed: \n', tabId, removeInfo);
 
     //window is not closing so remove the tab from the tabgroup if it is in one
-    const tab = await Tabs.get(tabId);
 
-    if (tab.groupId == -1) return //nothing to do if there is no groupId
+    //the tab has been removed
+    //the event doesn't tell you in which tabgroup the tab was or if it was in one at all, so this needs to be checked
+    const storedTabGroups = (await Storage.list()).map(item => new TabGroup(item));
+    const storedGroup = storedTabGroups.find(group => {
+        //if the group is inactive ignore it
+        if (!group.active) return false;
 
-    //get the tabgroup
-    const tabgroup = await Storage.get(tab.groupId);
-    //if the tabgroup is not active don't do anything
-    if (!tabgroup.active) return;
-    //remove the tab
-    tabgroup.tabs = tabgroup.tabs.filter(t => t.id != tabId);
-    //save the tabgroup
-    Storage.set(tab.groupId, tabgroup);
+        const tab = group.tabs?.find(tab => tab.id == tabId);
+        return !!tab;
+    })
 
+    //if the tabgroup wasn't found return
+    if (!storedGroup) return;
+    //else update it
+    storedGroup.tabs.filter(tab => tab.id != tabId);
+    Storage.set(storedGroup.id, storedGroup);
+    return;
 }
 
 /**
