@@ -8,7 +8,7 @@ import Tabs from "./js/api/tabs.js";
 // add tabgroup listeners
 chrome.tabGroups.onCreated.addListener(onTabGroupCreated);
 chrome.tabGroups.onUpdated.addListener(onTabGroupUpdated);
-chrome.tabs.onRemoved.addListener(onTabGroupRemoved)
+chrome.tabGroups.onRemoved.addListener(onTabGroupRemoved)
 
 //add tabs listeners
 chrome.tabs.onCreated.addListener(onTabCreated);

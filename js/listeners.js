@@ -1,7 +1,5 @@
 import { Tab, TabGroup } from "./classes/classes.js"
 import Storage from "./api/sync-storage.js"
-import Tabs from "./api/tabs.js"
-
 /*******************************************************
  ********************** TABGROUPS **********************
  *******************************************************/
@@ -10,9 +8,10 @@ import Tabs from "./api/tabs.js"
  * @param {Object} group 
  */
 export function onTabGroupCreated(group) {
-    group = new TabGroup(group);
-    Storage.set(group.id, group);
     // console.log('onCreated: ', group)
+    group = new TabGroup(group);
+    console.log(group)
+    Storage.set(group.id, group);
 }
 
 /**
@@ -20,10 +19,17 @@ export function onTabGroupCreated(group) {
  * @param {Object} group 
  */
 export async function onTabGroupRemoved(group) {
-    const storedGroup = await Storage.get(group.id);
+    console.log('onTabGroupRemoved(%o)', group)
+    const storedGroup = (await Storage.get(group.id))[group.id];
+    console.log('onTabGroupRemoved ', storedGroup)
     //if the storedGroup is active, we will keep it saved, the group will only be removed when it is inactive
-    if (storedGroup.active) return;
-    Storage.remove(group.id);
+    if (storedGroup.active) {
+        console.log('dont remove')
+        return;
+    }
+
+    console.log('remove')
+    await Storage.remove(group.id);
 }
 
 /**
@@ -31,12 +37,13 @@ export async function onTabGroupRemoved(group) {
  * @param {Object} group 
  */
 export async function onTabGroupUpdated(group) {
-    const storedGroup = new TabGroup(await Storage.get(group.id.toString()));
-
-    if (!storedGroup.active) return;
+    // console.log('onUpdated: ', group)
+    let storedGroup = await Storage.get(group.id)
+    if (!storedGroup) return;
+    storedGroup = new TabGroup(storedGroup[group.id]);
+    if (!storedGroup.id || !storedGroup.active) return;
     storedGroup.patch(new TabGroup(group));
     Storage.set(storedGroup.id, storedGroup);
-    // console.log('onUpdated: ', group)
 }
 
 /*******************************************************
@@ -55,7 +62,7 @@ export async function onTabCreated(createdtab) {
     const tab = new Tab(createdtab);
 
     //get the tabgroup
-    const tabgroup = Storage.get(createdtab.groupId);
+    const tabgroup = await Storage.get(createdtab.groupId)[createdtab.groupId];
 
     if (!tabgroup.active) return;
 
@@ -126,7 +133,10 @@ export async function onTabUpdated(tabId, changeInfo, tab) {
 
     //find the tapgroup via the groupId
     const tabClass = new Tab(tab)
-    const tabGroup = new TabGroup(await Storage.get(tab.groupId));
+    let tabGroup = await Storage.get(tab.groupId)
+    if (!tabGroup[tab.groupId]) return;
+    console.log(tabGroup);
+    tabGroup = new TabGroup(tabGroup[tab.groupId]);
     //update the tab inside the tabgroup
     tabGroup.tabs.push(tabClass);
     //save the updated tab group
