@@ -3,6 +3,7 @@ body {
     height: 100%;
     padding: 0;
     margin: 0;
+    font-family: Arial, Helvetica, sans-serif
 }
 
 :root {
@@ -10,8 +11,8 @@ body {
     --light-color: #F2F2F2;
     --primary: #021373;
     --primary-dark: #020F59;
-    --secondary: #79B4D9;
-    --secondary-dark: #023373
+    --secondary: #0248a2;
+    --secondary-dark: #023373;
 }
 
 #popup_body {
@@ -23,21 +24,143 @@ header {
     justify-content: center;
 }
 
-.logo>span {
-    position: relative;
-    border: 1px solid var(--primary-dark);
-    border-radius: 18px;
-    background-color: var(--primary);
-    color: var(--light-color);
-    padding: 5px;
+img {
+    max-width: 100%;
+    max-height: 100%;
 }
 
-.logo>span::after {
+button:hover {
+    cursor: pointer;
+}
+
+summary {
+    display: flex;
+    align-items: center;
+}
+
+details .details_closed_icon {
+    display: inline;
+}
+
+details .details_open_icon {
+    display: none;
+}
+
+details[open] .details_open_icon {
+    display: inline;
+}
+
+details[open] .details_closed_icon {
+    display: none;
+}
+
+/***************************************************************
+***************************** LOGO *****************************
+***************************************************************/
+.logo>span:first-child {
+    position: relative;
+    border: 1px solid var(--secondary-dark);
+    border-radius: 18px;
+    background-color: var(--secondary);
+    color: var(--light-color);
+    padding: 5px;
+    margin-right: -4px;
+}
+
+.logo>span:first-child::after {
     content: '';
     position: absolute;
     bottom: -10px;
-    left: 0;
-    height: 5px;
-    background: var(--primary-dark);
-    width: 100%;
+    left: 0px;
+    height: calc(100% - 10px);
+    /* background: var(--primary-dark); */
+    width: calc(100% + 5px);
+    border-bottom: 5px solid var(--secondary);
+    border-right: 5px solid var(--secondary);
+    border-bottom-right-radius: 18px;
+}
+
+.logo>span {
+    border-left: 5px solid var(--secondary);
+    border-top: 5px solid var(--secondary);
+    border-top-left-radius: 18px;
+    padding: 0px 5px;
+    color: var(--primary-dark);
+}
+
+/***************************************************************
+*************************** TABGROUP ***************************
+***************************************************************/
+.tabgroup {
+    padding: 5px 10px;
+}
+
+.tabgroup.unsynced {
+    color: #EBEBE4;
+}
+
+.tabgroup .sync_status {
+    padding: 2px 12px;
+    max-width: 24px;
+    border-radius: 18px;
+    display: flex;
+}
+
+.tabgroup .title {
+    margin: 0 5px;
+}
+
+.tabgroup.unsynced .open_tabgroup_icon {
+    display: none;
+}
+
+.tabgroup.synced .sync_on_icon {
+    display: inline;
+}
+
+.tabgroup.synced .sync_off_icon {
+    display: none;
+}
+
+.tabgroup.unsynced .sync_on_icon {
+    display: none;
+}
+
+.tabgroup.unsynced .sync_off_icon {
+    display: inline;
+}
+
+/***************************************************************
+****************************** TAB *****************************
+***************************************************************/
+.tab {
+    display: flex;
+    align-items: center;
+    padding: 3px 24px;
+    border-bottom: 1px solid #eee;
+}
+
+.tab img {
+    max-width: 32px;
+}
+
+/***************************************************************
+************************ UTILITY CLASSES ***********************
+***************************************************************/
+.flex-spacer {
+    flex-grow: 1;
+}
+
+.icon_btn {
+    background-color: transparent;
+    border: none;
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action_btn {
+    display: flex;
+    justify-content: space-around;
 }
